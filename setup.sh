@@ -6,7 +6,7 @@
 #check if user passed username, exit if not
 if [ -z "$1" ]
 then
-  echo "No username submitted.\nExiting..."
+  printf "No username submitted.\nExiting...\n"
   exit 1;
 fi
 
@@ -26,12 +26,20 @@ echo -e $sources > $dest
 # upgrade machine
 apt update && upgrade && dist-upgrade
 
+# install sudo and add user to sudo group
+apt install sudo
+adduser "$1" sudo
+
 # install packages for development
 apt install build-essential cmake git
-apt install git gconf2 gconf-service libgtk2.0-0 libudev1 libgcrypt20 libnotify4 libxtst6 libnss3 python gvfs-bin xdg-utils libcap2
 
+# install atom
+apt install git gconf2 gconf-service libgtk2.0-0 libudev1 libgcrypt20 libnotify4 libxtst6 libnss3 python gvfs-bin xdg-utils libcap2
 wget https://github.com/atom/atom/releases/download/v1.38.2/atom-amd64.deb -O atom.deb
 dpkg -i atom.deb
-# install sudo and add user to sudo group
-apt-get install sudo
-adduser "$1" sudo
+
+# install cross-platform stuff I need for the Raspberry Pi
+apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+dpkg --add-architecture armhf
+apt update
+apt install libsfml-dev:armhf libncurses-dev:armhf
