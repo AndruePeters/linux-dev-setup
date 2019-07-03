@@ -10,39 +10,39 @@ then
   exit 1;
 fi
 
+# install these packages first
+apt update
+apt install -y curl wget apt-transport-https dirmngr
 
 # first step is to upgrade machine to debian testing
 # write testing stuff to /etc/apt/sources.list
-sources="deb http://ftp.us.debian.org/debian/ testing main\n
-deb-src http://ftp.us.debian.org/debian/ testing main\n
-deb http://security.debian.org/debian-security testing/updates main\n
-deb-src http://security.debian.org/debian-security testing/updates main\n
-deb http://ftp.us.debian.org/debian/ testing-updates main\n
-deb-src http://ftp.us.debian.org/debian/ testing-updates main"
+sources="deb http://deb.debian.org/debian/ testing main\ndeb-src http://deb.debian.org/debian/ testing main\ndeb http://deb.debian.org/debian/ testing-updates main\ndeb-src http://deb.debian.org/debian/ testing-updates main"
 
-dest="./test.txt"
+dest="/etc/apt/sources.list"
+cp /etc/apt/sources.list sources.list.bak_
+
 echo -e $sources > $dest
 
 # upgrade machine
-apt update && upgrade && dist-upgrade
+apt update -y; apt upgrade -y; apt dist-upgrade -y
 
 # install tools needed for vmware
-apt-get install open-vm-tools open-vm-tools-dekstop
+apt install -y open-vm-tools open-vm-tools-dekstop
 
 # install sudo and add user to sudo group
-apt install sudo
+apt install -y sudo
 adduser "$1" sudo
 
 # install packages for development
-apt install build-essential cmake git
+apt install -y build-essential cmake git
 
 # install atom
-apt install git gconf2 gconf-service libgtk2.0-0 libudev1 libgcrypt20 libnotify4 libxtst6 libnss3 python gvfs-bin xdg-utils libcap2
+apt install -y git gconf2 gconf-service libgtk2.0-0 libudev1 libgcrypt20 libnotify4 libxtst6 libnss3 python gvfs-bin xdg-utils libcap2
 wget https://github.com/atom/atom/releases/download/v1.38.2/atom-amd64.deb -O atom.deb
 dpkg -i atom.deb
 
 # install cross-platform stuff I need for the Raspberry Pi
-apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+apt install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 dpkg --add-architecture armhf
 apt update
-apt install libsfml-dev:armhf libncurses-dev:armhf
+apt install -y libsfml-dev:armhf libncurses-dev:armhf
