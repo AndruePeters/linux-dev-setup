@@ -26,6 +26,9 @@ echo -e $sources > $dest
 # upgrade machine
 apt update && upgrade && dist-upgrade
 
+# install tools needed for vmware
+apt-get install open-vm-tools open-vm-tools-dekstop
+
 # install sudo and add user to sudo group
 apt install sudo
 adduser "$1" sudo
