@@ -45,4 +45,4 @@ dpkg -i atom.deb
 apt install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 dpkg --add-architecture armhf
 apt update
-apt install -y libsfml-dev:armhf libncurses-dev:armhf
+apt install -y libsfml-dev:armhf libncurses-dev:armhf libyaml-cpp-dev
